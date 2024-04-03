@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.smoofyuniverse'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'MinecraftForge'
+        url = 'https://maven.minecraftforge.net/'
+    }
+}
+
+configurations {
+    bootstrap
+}
+
+dependencies {
+    implementation 'org.spongepowered:configurate-core:4.1.2' // multi-release, signed jar
+    implementation 'net.minecraftforge:bootstrap-api:2.1.0'
+    bootstrap 'net.minecraftforge:bootstrap:2.1.0'
+}
+
+def mreMainClass = 'net.smoofyuniverse.fbs.Main'
+
+tasks.register('runNormal', JavaExec) {
+    group = 'run'
+    mainClass = mreMainClass
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+tasks.register('runWithForgeBootstrap', JavaExec) {
+    group = 'run'
+    mainClass = 'net.minecraftforge.bootstrap.ForgeBootstrap'
+    classpath = sourceSets.main.runtimeClasspath + configurations.bootstrap
+}
